@@ -1,0 +1,10 @@
+尾递归：若这个函数在尾位置调用本身（或是一个尾调用本身的其他函数等等），则称这种情况为尾递归，
+       是递归的一种特殊情形。
+
+foldl :: (a -> b -> a) -> a -> [b] -> a
+foldl step zero (x:xs) = foldl step (step zero x) xs
+foldl _    zero []     = zero
+
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr step zero (x:xs) = step x (foldr step zero xs)
+foldr _    zero []     = zero   
