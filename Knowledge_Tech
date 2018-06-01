@@ -1,0 +1,98 @@
+Basic Knowledge (Lec1 Inro)
+1. Knowledge tasks versus Concrete tasks
+key differences 
+  - C tasks are well-defined, so you know the "correct" answer.
+  - K tasks are not well-defined.
+BTW, they can transformed to each otehr in some sense in terms of user and
+how the solution might extend their knowledge.
+
+2.How is data different to knowledge
+data is just the various sensor readings/variables/records values to characterise
+some system, whereas knowledge results from interpreting the data in a way that
+helps the users to solve their problem (and learn something).
+
+--------------------------------------------------------------------------------
+
+First Part
+1. Exact String Search
+  Regular Expressions: a sequence of characters that define a search pattern
+  - 正则表达式的原理：https://www.jianshu.com/p/50a4aa64087e
+
+2. Approximate String Search
+  - Methods:
+    a. Neighbourhood Search: use insertion, replacement, deletion to edit misspelled words to find possibly correct word in the dictionary
+       Efficiency: for k editions, O(|26|k * |L|k)
+    b. Edit Distance
+       Effuciency: for two strings f t, O(|f||t|<for all t in the dic>)
+    c. N-Gram Distance
+    d. Phonetic methods
+       Four step process:
+         1. Except for initial character, transalte string character according to table
+         2. Remove duplicates (e.g. 4444 -> 4)
+         3. Remove 0s
+         4. Truncate to four symbols
+  - Evaluation
+      . Accuracy : fraction of correct responses (only one predicted word)
+      . Precision: fraction of correct responses among attempted responses (multiple predicted words)
+      . Recall   : proportion of words with correct response (somewhere)   (multiple predicted words)
+      
+3. Information Retrieval (User has an information need -> User formulates a query -> IR engine retrieves a set of documents)
+  data retrieval versus Information Retrieval
+    - The main difference is the existence of people, it is hard to contextualize the data to the particular user
+      due to divergence of human being. They may not even know what they really need. (based on meaning)
+      Whereas with data retrieval, we know exactly what kind of data (bitstream) we need, all we do just access
+      memory or hard drive to get the relevant data, and there is generally no ambiguity. (based on fact)
+  e.g for IR "Whether a travle distnation is interesting?" (depend on what user like)
+             "When does the next train depart from Flinders St?" (depend on where user is and where user want to go)
+  
+  Two query differences 
+    . Diffiuclty in wrting query
+    . How many areas can be used
+    . repeat or not
+  - Boolean Querying
+      . documents match if they contains or not contains some terms. (repeatable, auditable, controllable)
+      . it is unsatisfatory in serveral respects: there is no ranking and no control over result set size, and it is 
+        difficult to incorporate useful heuristics. It is remarkably difficult to do well.
+  - Rank    Querying
+      . based on evidence that the document is on the same topic as the query; different models may have different answers
+      - TF-IDF model
+          . Less weight is given to a term that appears in many documents (Inverse Document Frequency)
+          . More weight is given to a document where a query term appears many times. (Term Frequency)
+          . Less weight is given to a document that has many terms.
+        ... basic intention is to bias the score towards relevant documents by favouring terms that seem to be 
+            discriminaroty, and reducing the impact of terms that seem to be randomly distributed (a, the...).
+      - The vector-space model
+        Each document can be represented as a vetor to compare with the query vetor using product rule.
+        . Evaluation Metrics
+            - Persion and recall (similar to the approximate string search method)
+                                 . difference to approx method
+                                   1. moer results 2. multiple "correct" results 3. IR results are ranked (except boolean one)
+            Precision at k (P@k): number of returned relevant results in top k / k
+            
+4. Web-scale Information Retrieval
+  - Crawling
+    based on an assumption: if a web page is of interest, there will be a link to it from another page.
+    . finding and downloading as many documents as we can from the web (hopefully all of them, although impossible)
+  - Parsing
+    The aim of parsing is to reduce a web page (hmtl or some kinds of format), or a query to a sequence of tokens.
+    . methods
+        - remove page matadata, stop words
+        - case folding
+        - stemming
+        - Zoning (different zones with different weight) e.g documents have query term in titles with more weight given
+  - Indexing
+    Building an inverted index out of all of the tokens in our downloaded document collection.
+  - Querying
+    after the previous three steps have been completed (off-line), we are ready to accpet user queries (on-line), in 
+    the form of key words, that we tokenise (in a similar manner to our document collection) and then apply our querying
+    model (e.g. TF-IDF) based on the information in the inverted index, to come up with a document ranking.
+    
+Second Part
+1. Probaility
+2. Data Mining Fundamentals
+3. Classification: Naive Bayes/Evaluation (give some data and ask you how it works)
+4. Decision Trees
+5. Random Forests
+6. Geometric Methods (KNN, SVM(cost function, what margin is)
+7. Clustering
+8. Association Rules
