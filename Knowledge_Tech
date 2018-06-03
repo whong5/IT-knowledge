@@ -86,12 +86,23 @@ First Part
     after the previous three steps have been completed (off-line), we are ready to accpet user queries (on-line), in 
     the form of key words, that we tokenise (in a similar manner to our document collection) and then apply our querying
     model (e.g. TF-IDF) based on the information in the inverted index, to come up with a document ranking.
-    
+
+--------------------------------------------------------------------------------
 Second Part
 1. Probaility
 2. Data Mining Fundamentals
 3. Classification: Naive Bayes/Evaluation (give some data and ask you how it works)
+  . The goal is build a model for class attributes (dependent variables) as a function of the the values of other attributes
+  Naive assumption: attributes are conditionally independent.
 4. Decision Trees
+  - heuristics: maximize the purity of each node
+  Measures of node Impurity:
+    . Gini Index
+        - GINI(t) = 1-å[p( j |t)]2
+    . Entropy
+        - Entropy(t) = -å p(j|t)logp(j|t)
+    . Misclassification error
+        - Error(t) = 1- max P(i | t)
 5. Random Forests
 6. Geometric Methods (KNN, SVM(cost function, what margin is)
 7. Clustering
