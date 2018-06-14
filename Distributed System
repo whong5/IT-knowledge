@@ -1,0 +1,160 @@
+1. Introduction
+
+    - What is a distributed system?
+        . Mutiple computers on the network working together as a system. The spatial separation of computers and
+          communication aspects are hidden from users.
+        three key aspects:
+            1. A number of components
+            2. communication between the components
+            3. synergy, achieve more than the simple sum of individual components
+            
+    - Why distributed system?
+        . Resources sharing
+            - Hardware sharing (Disks, printers, scanners)
+            - Software sharing (Files, databases)
+            - Other (Processing power, memory, bandwidth)
+        . Benefits of resource sharing
+            1. Economy
+            2. Reliability
+            3. Availability
+            4. Scalability
+        
+        Three Consequences of DS
+            1. Concurrency
+            2. No global clock
+            3. Independent failures
+            
+    - Challenges
+        . Heterogeneity
+            - Some approaches for handling heterogenity issues:
+                . Using standard protocals (network, app)
+                . Using middleware
+                    - Middleware is a software layer between the distributed system and programming languages
+                    - Middleware Models:
+                        . Distributed File Systems
+                        . Remote Procedure Call (RPC)
+                        . Remote Method Invocation (RMI)
+                . Using agreed upon message formats and data types
+                . Adhering to an agreed upon API
+        . Openness
+        . Security
+        . Scalability
+            . Cost of physical resources
+            . Controlling the performance loss
+            . Resources should not run out
+            . Avoiding Performance bottlenecks
+        . Failure Handling
+        . Concurrency
+        . Transparency
+    
+2. Models
+
+    - Introduction
+        . three higher level models can be considered
+            1. Physical models
+            
+                - it considers the types of computers and devices that constitute a system and their interconnectivty,
+                  without details of specific technologies
+                  
+                - underlying hardware elements
+                
+            2. Architecture models (client-server, peer-to-peer)
+            
+                - it describes a system in terms of the computational and communication tasks performed by its computational
+                  elements
+            
+                . Architecture elements - components of the system that interact with one another
+                    - Communication Entities (Client, Server and peer)
+                    - Interface
+                . Architecture patterns - the way components are mapped to the underltying system
+                . Associated middleware solutions - exisiting solutions to common problems
+                
+            3. Fundamental models
+            
+                - it takes an abstract perspective in order to describe solutions to individual issues faced
+                  by most distributed system
+            
+                - The non-functional aspects of the distributed system such as:
+                    . reliability
+                    . security
+                    . performance
+                    
+    - Architectural models
+        
+        - What are the entities that are communicating in the ds?
+            . From a system prespective 
+                1. processes (threads strictly in most cases)
+                2. nodes (sensor network)
+            . From a programming prespective (more problem-oriented abstractions)
+                1. Objects (object-oriented approaches)
+                2. Componenets (more contractual approach)
+                
+        - how do they communicate, or, more specifically, what communication paradigm is used?
+            1. Interprocess communication (low-level)
+                . socket programming
+                . message passing primitives
+                . multicast communication
+            2. remote invocation
+                . RPC
+                    - procedures in processes on remote computer computers can be called as if they are in local address space
+                      , therefor offer (at a minimum) access and location transparency
+                . RMI
+                    - assembles RPC, but benefit more generally from tighter integration into object-oriented languages
+            3. indirect communication
+                - senders do not need to know who they are sending to (space uncoupling)
+                - senders and receivers do not need to exist at the same time (time uncoupling)
+                - Techniques
+                    . Group communication
+                    . Public-subscribe systems
+                        - information generated by producers is routed to consumers who desire this information
+                    . Message queues
+                    . Tuple spaces
+                    . Distributed shared memory
+                    
+        - What roles and responsibilities do they have in the overall archietecture?
+            . Client-server
+            . Peer-to-Peer
+            
+        - How are they mapped on to the physical distributed infarastructure (what is their placement) ?
+            . Mapping of service to multiple servers
+            . Caching
+            . Mobile code
+                - to use the service, each customer would have to download a special applet that receives updates from 
+                  the broker’s server, displays them to the user and perhaps performs automatic buy and sell operations
+            . Mobile agent
+        
+    - Fundamental models
+        1. Interation model
+            - Communication delays have to be accounted for when designing distributed systems. 
+              *Interaction Model* facilitates this task.
+                  . Synchronous system model - assums know bound on:
+                      - the time to exexute each step of process
+                      - message transmission delay
+                      - local clock drift rate
+                  . Asynchronous system model - assumes no bound on:
+                      - process execution speed
+                      - messgae transmission delay
+                      clock drift rate
+              
+        2. Failure model
+            - Failure model helps understand the different types of faults possible in a ds
+               1. Omission failure
+                   - send omission failure
+                   - receive omission failure
+                   - channel omission failure
+               2. Arbitrary failure
+                   - message contents corrupted
+                   - Non-existent messages delivered
+                   - real messages delivered more than once
+               3. Timeing failure
+            
+        3. Security model
+            - defines and classfies the forms of attacks possible in a ds
+
+3. Interprocess Communication
+4. Remote Invocation
+5. Indirect Communication
+6. Operating System Support
+7. Security
+8. File Systems
+9. Naming
