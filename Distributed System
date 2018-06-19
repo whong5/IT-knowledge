@@ -1,0 +1,360 @@
+1. Introduction
+
+    - Distributed System
+        . A collection of independent computers that appear to its users as a single coherent system
+        
+        - Why use ds?
+            . Resource Sharing:
+                - Hardware resource (Disks, Printers, Scanners)
+                - Software resource (Files, Databases)
+                - Other (Processing power, memory, bandwidth)
+            . Benefits of resource sharing:
+                1. Economy (cost effective)
+                2. Reliability (falut tolerance)
+                    - Validity: any message would be delivered successfully eventually
+                    - integrity: the message is identical to the one sent, and no message is delivered twice
+                3. Avaiablity (high uptime)
+                4. Scalability (extendible)
+        - tradeoff of using ds (consequences)
+            . Concurency
+            . No global clock
+            . Heterogenity
+            . Independent of failures
+            
+    - Distributed System Challenges (SOS HCTF)
+        . Heterogenity
+            - Ds system use hardware and software resources of varying charteristics (heterogeneous resources):
+                . Networks
+                . Hardware
+                . Operating System
+                . Programming Language
+                . Implementation by different developers
+            - some viable method:
+                . Portable code
+                . Middleware
+                    - it is a software layer between the distributed application and the operating systems that
+                      provides a programming abstraction and masks the heterogenity of the underlying networks,
+                      hardware, operationg system, and programming languages.
+                      
+                      Middleware models include:
+                          . Distributed File Systems
+                          . RPC
+                          . RMI
+                          . Distributed Documents
+                          . DIstributed Data Bases
+                          
+                . Using standard protocol
+                . Using argeed articulated APIs, message formats and data types
+        . Openess
+            - Refers to the ablity of extend the system in different ways by adding software and hardware resources
+            - Some approaches to address openess:
+                . Publishing Key interfaces
+                . Allowing a uniform communication mechanism to communicate over the published interfaces
+                . Ensuring all implementations adhere to published interfaces
+        . Concurency
+            - two possible ways:
+                1. access sequential - slowing down the system
+                2. semaphores supported by os
+        . Scalability
+            - four challenges for scalability:
+                1. Cost of physical resources
+                2. Controlling the performance loss
+                3. Resources should not be run out (IPV4 -> IPV6)
+                4. Avoiding performance bottlenecks (Decentrilized architectures and algorithm can be used)
+        . Security
+            - Three aspects:
+                1. Confidentiality (Leakage)
+                2. Integrity (Tampering)
+                3. Availability (Vandalism)
+            - Mechanism to handle security:
+                - Encryption, Authentication, Authority (access control lists)
+        . Failure Handling
+            - some strategies:
+                1. Detecting
+                2. Tolerating (failure report back to user e.g "try again later")
+                3. Recovery (Roll back)
+                4. Reduncancy
+                5. Masking (Timeout and retransmission)
+        . Transparency
+            - Access, Location, Perfomance, Concurrency, Failure, Replication, Mobility
+
+2. Models
+
+    - Physical models
+        - underlying hardware elements
+    - Architectural models
+        . Client-server architecture
+        . Peer-to-peer architecture
+        
+        - Ds architecture variations:
+            . Services provided by multiple servers
+                - servers may 
+                    . Partition the sets of object
+                    . Maintain replicated copies of them on serveral hosts
+                - Improve performance and realiability
+            . Proxy servers and caches
+                - when an object is required, the caching service is checked to see if an up-to-date copy is available
+                - Advantages:
+                    . Increase the avilability and performance of the service by reducing the load on the wide are network
+                      and web servers
+                    . Proxy servers can take on other roles - better relaibility
+                    . Improved security by access restriction and privacy protection
+            . Mobile code
+            . Mobile agent
+            . Network computers and Thin Clients
+                - Download their os and app software from a remote file system, Applications are run locally
+                - applications are not downloaded but run on the computer server
+                     - charteristics of thin clients
+                         1. move comlexity away from the end-user service
+                         2. Local user interface, remove services and applications
+                         3. Few assumptions or demands on the client service
+            
+    - Fundamental models
+    
+        - Fundamental models allow ds to be analyzed in terms of fundamental properties regardless of architecture.
+          These models help understand how the non-functional requirements are supported
+    
+        . Interation models
+           - handle the performance of communication channels
+               . Latency
+               . Bandwidth
+               . Jitter
+           - how to handel the computer clocks difference and timing events
+               . Intial time setting being different
+               . Different clock drift rate
+              
+           - Variations of interation models:
+               . Sychronous system models, assume known bounds on:
+                   - transmission delay
+                   - the time to execute each step of proccess
+                   - local clock drift rate 
+               . Asychronous system models, assume no bounds on all of three factors above
+           
+        . Failure models
+            - Omission failure
+            - Abitrary failure
+            - Timing   failure
+                . occur when time limits set on process execution time, message delivery time and clock drift rate
+                . more relevant to synchronoun systems
+        . Security models
+            - Encryption
+                . Secret Key
+                . Pub/Pri Key Pairs
+            - Authentication
+            - Security Channels
+                . (SSL)
+
+3. Interprocess Communication
+
+    - The API for Internet protocols
+        . UDP (Java)
+            - Provide a message passing abstration
+            - Is the simplest forms of interprocess communication (IPC)
+            - Transimits a single message (called datagram) to the receiving process
+            
+            Possible failures of UDP:
+                . Data corruption
+                . Omission failures
+                . Ordering
+            
+        . TCP (Java)
+            - Provide an abstration for two way stream
+                . Features of stream abstration (not addressed by UDP):
+                    - Message sizes
+                    - Lost message (acknowledge)
+                    - Flow Control
+                    - Message duplication or ordering (message indentifiers appended in the IP packets)
+                    - Message destination (three way handshake)
+            - Stream do not have message boundries
+            - Stream provides the basis for producer / consumer communication
+            - Data sent by producer are queued until consumer is ready to receive them
+            - The consumer must wait when no data is available
+            
+    - External data representation and marshalling
+        . data strucute in programs are flattened to the bytes before transmission (marshlling), which is suitable for 
+          transimission (using external data representation)
+        . To mask heterogenity in data representations : ASCII vs Unicode
+        
+        - four approaches to external data representation:
+            1. CORBA's common data representation
+                - need to use an interface compiler
+            2. Java Object's serilization
+                - flatten the object
+                - Information about the object includes: class name, version etc.
+                    . All objects are serilizes as handles
+                - how to serialize a object of user class:
+                    . Implement the Java Serliazation interface
+                    . Contain a private static final long interface named serialVersionID
+            3. Extensive Markup Language (XML)
+                - Compared with above approach, XML is perferable cause:
+                    . XML is self-describing
+                        - tags describe logical structure of the content
+                        - Tags are generic (unlike html tags giving instructions)
+                    . XML is extensible
+                        - Additional tags can be defined later
+                    . More human readable
+                        - Tags togerhre with namespaces allow the tags to be meaningful
+                        - Data is textual, it can be read by humans and other platforms
+            4. Javascript Object Notation (JSON)
+                - Compared with XML, JSON is more perferable as:
+                    . JSON requires less configuration overhead - it is easier to program for reading and writing
+                    . XML has to be parsed with an XML parser. JSON can be parsed by a standard JS function into a
+                      ready-to-use JavaScript Object
+                    . JSON serialization produces shorter strings than XML. - Using JSON will reduce the amount of
+                      data transimission and imporve performance
+                      
+4. Remote Invocation
+    
+    Two models mainly used:
+        1. Remote Procedure Call (RPC)
+           - mostly at-least-once semantics (sun RPC)
+           
+           - some relevant parts of RPC:
+               . Communication moduel
+                   - Implements the designed choices in terms of request-replay process (transimission of requests, 
+                     dealing with duplicates, retransimssion of results)
+               . Client / Server stub (skeleton)
+                   - Marshal the message sent through network, (client include procdure indentifiers)
+                     Unmarshal the message received (serve forwards it the the corrsponding server procedure)
+               . Dispatcher
+                   - Selects the server stub based on the procedure identifiers and fowards the request to the specifc stub
+               . Client / Server process
+           
+        2. Remote Method Invocation (RMI)
+           - mostly at-most-once semantics
+           
+           - except the components at RPC, RMI has:
+               . Communication moduel
+                   - It also need to queris the remote reference module to obtain the local reference of the object and
+                     pass the local references to the dispather for the class
+               . Remote reference module
+                   - create the remote object reference
+                   - Maintaning the remote object table which is used for translating between local and remote obj references
+                   - when to create:
+                       . A remote object reference is passed for the first time
+                       . When a remote object reference is received and an entry is not present in the table
+               . Servants
+                   - are the objects in the process that receive the remote invocation
+    
+5. Indirect Communication
+    - Communication between entities in a distributed system through an intermediary with no direct coupling between
+      the senders and receivers
+        - advantages
+            . It can handle scenarios where user connect and disconnect very often (mobile environment)
+            . Excel at event dissemination where receivers may be unknown and change often (p /s system -> RSS)
+            . Greater scalability in handling a very large number of participants (Googole Ads system)
+        - disadvantages
+            . Performance overhead introduced by adding a level of abstraction
+                - Reliable message delivery, ordering. Dynamic changes are anticapated
+            . Hard to manage system behaviour due to the lack of direct coupling (debug)
+            . Difficult to achieve end-to-end properties
+                - Real time behaviour, Security
+    
+    . Group Communication
+        - offers a space uncoupled service whereby a message is sent to a group and then the message is delivered 
+          to all memebers of the group.
+        - Implement issues
+            . reliability and ordering in mutlticast
+                1. FIFO
+                2. causal ordering (happen time -> all process)
+                3. total ordering (at one process order -> all process)
+            . Group membership management
+                - group members levae and join
+                - failed members
+                - notifying members in group memberships changes
+                - changes to the group address
+    . Pub / Sub System
+        - this system is a system where publishers publish structured events to an event service and subsribers express
+          interest in particular events through subscriptions which can be arbitary patterns over structured events.
+        - Characteristcs:
+            1. Heterogenity
+                - allows objects that were not designed to interoperate to communicate due to the loosely coupled nature.
+            2. Asynchronous (event driven)
+        - different types of implementations:
+            . Channel based
+            . type based
+            . topic based
+            . content based
+                - this is the most flexible of the shemes. Subscribes can specify interest is particular values or range
+                  of values for mutiple attributes. Notifications are based on mathcing the attribute specification criteria
+    . Message Queue
+        - point to point indierct communication in that the senders places the message into a queue, and then it is
+          removed by a single process
+        - Three receive styles:
+            1. Blocking
+                - a cousumer waits for at least one message on a queue then returns
+            2. Unblocking (poll)
+                - a consumer will check and get a message if there, otherwise it returns without a message
+            3. Notifying
+    . Distributed Shared Mempry (DSM)
+        - DSM is an abstraction for sharing data between computers do not share physical memory. Processes acess DSM
+          by reads and updates to what appears to be ordinary memory within their address space
+
+6. Operating System Support
+
+    - Networking os
+        . User retain autonomy in managing their own processing resources
+        . It does not manage processes across nodes
+        . Provide support for networking operations
+    - Distributed os
+        . Users are never concerned with where their programs run, or the location of any resources
+        . Has control over all the nodes in the system, and it transparently locates new processes at whatever node
+          suits its scheduling policies
+        . Each host may not have everything that would be required to operate on its own
+        . Single system image
+        . No widely adopted
+        
+    - when the os is divided into kernel and server process then they:
+        . Encapsulate
+            - hides details about the platform's internal operations, like its memory management and device operation
+        . Protection
+            - from illegitimate access, from other users and other clients the are using resources on the host. Ensure
+              that user cannot interfer with each other and that resources are not exhausted to the point of system failure
+        . Concurrently process (by time sharing)
+        
+        p.s what is kenerl?
+            - it is part of the operating system, which has full access to the host's resources. It begins execution
+              after the host is powered up and continues to execute while the host is operational. 
+    
+    - Core OS components
+        . Process manager
+            - handles the creation of processes, which is a unit of resource management, encapsulating the basic resources
+              of memory (address space) and processor time (threads)
+        . Thread manager
+            - handles the creation, synchronization and shceduling of one or more threads for each process. 
+            
+            -- Multiple threads verse Mutiple processes
+                - some facts: 
+                    - New process requires a new address space while threads require only a new processor context
+                    - A new processor context comporimises the value of the processor registers such as the program
+                      counter, the address space identifier and the processor protection mode.
+                    - Context swithcing involves saving the processor's original state and loading the new state. when
+                      change from user mode to kenerl mode, we call it domain transition
+                    - Switch from process to process need domain transition while switch from thread to thread within a
+                      same process will not need to.
+                - advantage using threads:
+                    1. faster context switching
+                    2. cheaper to allocate / deallcocate
+                    3. Easy to share resources via shared memory.
+                - disadvantage:
+                    1. Synchronization overhead of shared data
+                    2. Shared process memory space (corruption leads to all corrupted)
+                    3. Program debugging (synchronization, non-deterministic timing, accidental data corruption)
+            
+        . Communication manager
+            - handles interprocess communication (between threads from different processes, sometimes different hosts)
+        . Mermory manager
+            - handles the allcocation and access to physical and virtual memory. Provide translation from virtual to physical
+              memory and handles paging of memory.
+        . Supervisor
+            - handles priviledged operations (those that directly affect shared resources on the host, e.g IO)
+              It is responsible for ensuring that host continues to provide proper service to each client
+
+7. Secrutiy
+
+
+
+
+
+
+
