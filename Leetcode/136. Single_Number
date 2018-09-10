@@ -1,0 +1,45 @@
+c++:
+
+1. O(n) time and O(n) space (hashmap)
+int singleNumber(vector<int>& nums) {
+    map<int, int> imap;
+    for (int i = 0; i != nums.size(); i++) {
+        // if i already in imap
+        if (imap.count(nums[i])) {
+            imap.erase(nums[i]);
+        } else {
+            imap[nums[i]] = 1;
+        }
+    }
+    for (auto i : imap) {
+        return i.first;
+    }
+}
+
+2. O(n) time and O(1) space (XOR)
+int singleNumber(vector<int>& nums) {
+    int res = 0;
+    for (int i = 0; i != nums.size(); i++) {
+        res ^= nums[i];
+    }
+    return res;
+}
+
+
+Java:
+1.
+public int singleNumber(int[] nums) {
+    Map<Integer, Integer> imap = new HashMap();
+    for (int i = 0; i < nums.length; i++) {
+        if (!imap.containsKey(nums[i])) {
+            imap.put(nums[i], 1);
+        } else {
+            imap.remove(nums[i]);
+        }
+    }
+    for (int i : imap.keySet()) {
+        return i;
+    }
+    return 0;
+}
+2.
